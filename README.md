@@ -5,6 +5,8 @@ This is a set of VBA utility modules you can use for your project
 
 I always needed a bunch of utility modules that I make and I make them a lot of times. 'Where's the code reuse' I ask? So I created a project housing my utilities and so *butil* was born. The word *butil* is b + util which signifies basic utilities but it also means seed in Filipino, a nice occurence.
 
+**To God I plant this seed, may it turn into a forest**
+
 quick start
 ====
 
