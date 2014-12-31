@@ -49,8 +49,8 @@ Public Sub TestShiftBase()
     Dim TempArr As Variant, OutArr As Variant
     VaseAssert.AssertArraysEqual gNormalizedArray, gNonNormalArray, "Shifted array"
     
-    TempArr = ArrayUtil.ShiftBase(gNormalizedArray)
-    VaseAssert.AssertEqual LBound(TempArr), 0, "Normalized array"
+    TempArr = ArrayUtil.ShiftBase(gNormalizedArray, 3)
+    VaseAssert.AssertEqual LBound(TempArr), 3, "Normalized array"
     VaseAssert.AssertArraysEqual TempArr, gNormalizedArray
     VaseAssert.AssertArraysEqual TempArr, gNonNormalArray
 End Sub
@@ -98,4 +98,91 @@ Public Sub TestRemoveAllElements()
     VaseAssert.AssertErrorNotRaised
     
     Ping_
+End Sub
+
+Public Sub TestIsInArr()
+    VaseAssert.AssertFalse ArrayUtil.IsInArray(0, gEmptyArray), "Empty Array"
+    VaseAssert.AssertFalse ArrayUtil.IsInArray(0, gEmptyConstant), "EMPTY"
+    
+    VaseAssert.AssertTrue ArrayUtil.IsInArray(1, gNormalArray), "Normal Array"
+    VaseAssert.AssertFalse ArrayUtil.IsInArray(2, gNormalArray), "Normal Array"
+End Sub
+
+Public Sub TestRemoveDuplicates()
+    VaseAssert.AssertEmptyArray ArrayUtil.RemoveDuplicates(gEmptyArray), "Empty Array"
+    VaseAssert.AssertEmptyArray ArrayUtil.RemoveDuplicates(gEmptyConstant), "EMPTY"
+    
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.RemoveDuplicates(Array(1, 2, 3, 2, 1)), Array(1, 2, 3)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.RemoveDuplicates( _
+            Array("A", "b", "C", "C", "A")), _
+            Array("A", "b", "C")
+End Sub
+
+Public Sub TestHasDuplicates()
+    VaseAssert.AssertFalse ArrayUtil.HasDuplicates(gEmptyArray), "Empty Array"
+    VaseAssert.AssertFalse ArrayUtil.HasDuplicates(gEmptyConstant), "EMPTY"
+    
+    VaseAssert.AssertTrue _
+        ArrayUtil.HasDuplicates(Array(1, 2, 3, 2, 1))
+    VaseAssert.AssertTrue _
+        ArrayUtil.HasDuplicates(Array("A", "b", "C", "C", "A"))
+End Sub
+
+Public Sub TestJoinArrays()
+    Dim LeftArr As Variant, RightArr As Variant
+    LeftArr = Array(1, 2, 3)
+    RightArr = Array(1, 2)
+
+    VaseAssert.AssertEmptyArray ArrayUtil.JoinArrays(Empty, Array())
+    VaseAssert.AssertEmptyArray ArrayUtil.JoinArrays(Array(), Empty)
+    
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.JoinArrays(LeftArr, Empty), LeftArr
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.JoinArrays(Empty, RightArr), RightArr
+    
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.JoinArrays(LeftArr, RightArr), _
+        Array(1, 2, 3, 1, 2)
+End Sub
+
+Public Sub TestRange()
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Stop_:=10), _
+        Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Start_:=5, Stop_:=10), _
+        Array(5, 6, 7, 8, 9)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Start_:=5, Stop_:=10, Step_:=2), _
+        Array(5, 7, 9)
+    
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Start_:=10, Stop_:=0, Step_:=-1), _
+        Array(10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Start_:=10, Stop_:=0, Step_:=-3), _
+        Array(10, 7, 4, 1)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Start_:=10, Stop_:=1, Step_:=-3), _
+        Array(10, 7, 4, 1)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Start_:=10, Stop_:=2, Step_:=-3), _
+        Array(10, 7, 4)
+    
+    Ping_
+End Sub
+
+Public Sub TestCreateWithSize()
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.CreateWithSize(0)
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.CreateWithSize(-1)
+        
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.CreateWithSize(1), Array(Empty)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.CreateWithSize(3), Array(Empty, Empty, Empty)
 End Sub

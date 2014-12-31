@@ -103,6 +103,14 @@ Public Function EditDistance(ByVal string1 As String, ByVal string2 As String) A
     Dim min1 As Long, min2 As Long, min3 As Long, minmin As Long, MaxL As Long
     
     string1_length = Len(string1):  string2_length = Len(string2)
+    If string1_length = 0 Then
+        EditDistance = 0
+        Exit Function
+    End If
+    If string2_length = 0 Then
+        EditDistance = 0
+        Exit Function
+    End If
     
     ' Resize arrays, modified constants to adjust to variable string lengths plus optimization
     ReDim distance(0 To string1_length, 0 To string2_length)

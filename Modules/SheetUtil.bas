@@ -8,11 +8,24 @@ Attribute VB_Name = "SheetUtil"
 ' * Sheet Names can only have 31 characters at most
 '       Functions handle it by first triming it, then giving it another name until satisfied
 
+
+
 '===========================
 '--- Constants           ---
 '===========================
 Public Const SHEET_NAME_LENGTH_LIMIT As Integer = 31
 Public Const ELLIPSIS As String = "..."
+
+Private Const BAD_SHEET_NAME_CHARACTERS As String = ":;\;/;?;*;[;]"
+
+'===========================
+'--- Properties           ---
+'===========================
+
+Public Property Get BadSheetNameCharacters() As Variant
+    BadSheetNameCharacters = Split(BAD_SHEET_NAME_CHARACTERS, ";")
+End Property
+
 '===========================
 '--- Functions     ---
 '===========================
@@ -31,70 +44,26 @@ Public Function DoesSheetExists(Book As Workbook, SheetName As String) As Boolea
 End Function
 
 '# Produce a sheet name that doesn't exceed the character limit
-Public Function AsShortenedSheetName(SheetName As String) As String
+Public Function AsShortenedSheetName(SheetName As String, Optional Filler As String = ELLIPSIS) As String
     If Len(SheetName) <= SHEET_NAME_LENGTH_LIMIT Then
         AsShortenedSheetName = SheetName
     Else
-        AsShortenedSheetName = Left(SheetName, SHEET_NAME_LENGTH_LIMIT - Len(ELLIPSIS)) & ELLIPSIS
+        AsShortenedSheetName = Left(SheetName, SHEET_NAME_LENGTH_LIMIT - Len(Filler)) & Filler
     End If
 End Function
 
-'# Make a pseudo unique sheet name based on the time
-'! If by some weird reason, a workbook has all 9999 Sheet-* names in the book, grab a gun
-Private Function GenerateRandomSheetName() As String
-    Randomize
-    GenerateRandomSheetName = "Sheet-" & CStr(Int(Rnd * 9000) + 1000)
-End Function
-
-'# Renames the sheet with options, returns true if the sheet was renamed
-'@ Param(TrimLongName): If the name is too long, it chops it to 31 characters with 3 inclusive ellipsis
-'@                      If this is set to False and the name is too long, the output will be False
-'@ Param(GenerateRandomName): If the name is not unique, an unique random name will be given
-Public Function RenameSheetSafely(Book As Workbook, Sheet As Worksheet, SheetName As String, _
-                    Optional TrimLongName As Boolean = True, _
-                    Optional GenerateRandomName As Boolean = True, _
-                    Optional GenerateUntilUnique As Boolean = True) As Boolean
-    Dim ShortName As String
-    ShortName = AsShortenedSheetName(SheetName)
-    If Not TrimLongName And ShortName <> SheetName Then
-        RenameSheetSilently = False
-        Exit Function
-    End If
+'# This strips the bad characters in a sheet
+'# These bad characters are : \ / ? * [ ]
+Public Function StripBadCharacters(SheetName As String, Optional Replacement As String = "") As String
+    Dim StrippedName As String, Char As Variant
+    StrippedName = SheetName
     
-    If IsSheetNameUnique(Book, ShortName) Then
-        Sheet.Name = ShortName
-        RenameSheetSilently = True
-    Else
-        If Not GenerateRandomName Then
-            RenameSheetSilently = False
-            Exit Function
-        Else
-            ShortName = GenerateRandomSheetName
-            While GenerateUntilUnique And Not IsSheetNameUnique(Book, ShortName)
-                ShortName = GenerateRandomSheetName
-            Wend
-            
-            Sheet.Name = ShortName
-            RenameSheetSilently = True
-        End If
-    End If
+    For Each Char In BadSheetNameCharacters
+        StrippedName = Replace(StrippedName, CStr(Char), Replacement)
+    Next
+    
+    StripBadCharacters = StrippedName
 End Function
-
-'# This adds the worksheet with the specified name
-'# This follows the flow of RenameSheetSafely()
-'# However, if the renaming returns false, you will get the sheet with the default name
-'# GenerateUntilUnique is set to False as the original name might be the most original
-'# However resort to RenameSheetSafely if it fails
-Public Function AddSheet(Book As Workbook, SheetName As String, _
-                    Optional TrimLongName As Boolean = True, _
-                    Optional GenerateRandomName As Boolean = True) As Worksheet
-    Set AddSheet = Book.Worksheets.Add
-    RenameSheetSafely Book, AddSheet, SheetName, _
-        TrimLongName:=TrimLongName, _
-        GenerateRandomName:=GenerateRandomName, _
-        GenerateUntilUnique:=False
-End Function
-
 
 '# This checks if a sheet name is unique in a book.
 '# This is used for safely renaming a sheet
@@ -139,3 +108,11 @@ End Function
 Public Sub MoveSheetToEnd(Book As Workbook, Sheet As Worksheet)
     Sheet.Move After:=GetLastSheet(Book)
 End Sub
+
+'# A pair of function to count there records
+Public Function GetRowCount(Sheet As Worksheet) As Long
+    GetRowCount = Sheet.UsedRange.Rows.CountLarge
+End Function
+Public Function GetColumnCount(Sheet As Worksheet) As Long
+    GetColumnCount = Sheet.UsedRange.Rows.CountLarge
+End Function

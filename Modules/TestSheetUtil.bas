@@ -56,28 +56,13 @@ Public Sub TestAsShortenedSheetName()
         "AAAAAAAAAABBBBBBBBBCCCCCCCCX..."
 End Sub
 
-Public Sub TestRenameSheetSafely()
-On Error GoTo Cleanup
-    Dim NewSheet1 As Worksheet, NewSheet2 As Worksheet, NewSheet3 As Worksheet
-    
-    Set NewSheet1 = gBook.Worksheets.Add
-    Set NewSheet2 = gBook.Worksheets.Add
-    Set NewSheet3 = gBook.Worksheets.Add
-    
-    SheetUtil.RenameSheetSafely gBook, NewSheet1, "Short  Enough Name"
-    SheetUtil.RenameSheetSafely gBook, NewSheet2, _
-        "AAAAAAAAAABBBBBBBBBCCCCCCCCXABCY"
-    SheetUtil.RenameSheetSafely gBook, NewSheet3, _
-        "AAAAAAAAAABBBBBBBBBCCCCCCCCXABCY"
-        
-    VaseAssert.AssertEqual NewSheet1.Name, "Short  Enough Name"
-    VaseAssert.AssertEqual NewSheet2.Name, "AAAAAAAAAABBBBBBBBBCCCCCCCCX..."
-    VaseAssert.AssertNotEqual NewSheet3.Name, "AAAAAAAAAABBBBBBBBBCCCCCCCCX..."
-    
-Cleanup:
-    SheetUtil.DeleteSheetSilently NewSheet1
-    SheetUtil.DeleteSheetSilently NewSheet2
-    SheetUtil.DeleteSheetSilently NewSheet3
+Public Sub TestStripBadCharacters()
+    VaseAssert.AssertEqual _
+        SheetUtil.StripBadCharacters("CREATE: More sheets"), _
+        "CREATE More sheets"
+    VaseAssert.AssertEqual _
+        SheetUtil.StripBadCharacters("Sheet:\/?*[]"), _
+        "Sheet"
 End Sub
 
 ' This also test GetLastSheet, MoveSheetToEnd
