@@ -101,11 +101,11 @@ Public Sub TestRemoveAllElements()
 End Sub
 
 Public Sub TestIsInArr()
-    VaseAssert.AssertFalse ArrayUtil.IsInArray(0, gEmptyArray), "Empty Array"
-    VaseAssert.AssertFalse ArrayUtil.IsInArray(0, gEmptyConstant), "EMPTY"
+    VaseAssert.AssertFalse ArrayUtil.IsIn(0, gEmptyArray), "Empty Array"
+    VaseAssert.AssertFalse ArrayUtil.IsIn(0, gEmptyConstant), "EMPTY"
     
-    VaseAssert.AssertTrue ArrayUtil.IsInArray(1, gNormalArray), "Normal Array"
-    VaseAssert.AssertFalse ArrayUtil.IsInArray(2, gNormalArray), "Normal Array"
+    VaseAssert.AssertTrue ArrayUtil.IsIn(1, gNormalArray), "Normal Array"
+    VaseAssert.AssertFalse ArrayUtil.IsIn(2, gNormalArray), "Normal Array"
 End Sub
 
 Public Sub TestRemoveDuplicates()
@@ -185,4 +185,41 @@ Public Sub TestCreateWithSize()
         ArrayUtil.CreateWithSize(1), Array(Empty)
     VaseAssert.AssertArraysEqual _
         ArrayUtil.CreateWithSize(3), Array(Empty, Empty, Empty)
+End Sub
+
+Public Sub TestProjection()
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.Projection(Array(), Array())
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.Projection(Array(), Array(1))
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.Projection(Array(1), Array())
+
+    Dim Arr As Variant, Indices As Variant
+    Arr = ArrayUtil.Range(Start_:=1, Stop_:=25, Step_:=5)
+    Indices = Array(3, 1)
+    
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Projection(Indices, Arr), Array(16, 6)
+End Sub
+
+Public Sub TestSetDifference()
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.SetDifference(Array(), Array())
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.SetDifference(Array(), Array(1))
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.SetDifference(Array(1), Array())
+
+    Dim Set_ As Variant, Subset_ As Variant, Elem_ As Variant, Diff_ As Variant
+    Set_ = ArrayUtil.Range(Stop_:=5)
+    Subset_ = Array(1, 3)
+    Diff = ArrayUtil.SetDifference(Subset_, Set_)
+    
+    For Each Elem_ In Array(0, 2, 4)
+        VaseAssert.AssertTrue _
+            ArrayUtil.IsIn(Elem, Diff)
+    Next
+    
+    Ping_
 End Sub

@@ -4,6 +4,9 @@ Public Sub WriteInfo()
     ChipReadInfo.Modules = Array( _
         "ArrayUtil", _
         "AssertUtil", _
+        "BookUtil", _
+        "RangeUtil", _
+        "SheetUtiil", _
         "StringUtil")
 End Sub
 

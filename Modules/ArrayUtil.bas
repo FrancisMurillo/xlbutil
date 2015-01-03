@@ -1,4 +1,5 @@
 Attribute VB_Name = "ArrayUtil"
+
 '===========================
 '--- Module Contract     ---
 '===========================
@@ -63,6 +64,9 @@ Public Function IsEmptyArray(Arr As Variant) As Boolean
     Else ' Not supposed to happen, this might be a type error
         Err.Raise vbObjectError + ERR_OFFSET, Source:=ERR_SOURCE, Description:="IsEmptyArray"
     End If
+End Function
+Public Function IsNotEmptyArray(Arr As Variant) As Boolean
+    IsNotEmptyArray = Not IsEmptyArray(Arr)
 End Function
 
 '# Turns an empty array, as defined by IsEmptyArr, to an empty array
@@ -163,7 +167,7 @@ Public Function RemoveDuplicates(Arr As Variant) As Variant
     Count = 0
     For Index = 0 To UBound(Arr)
         Item = Arr(Index)
-        If Not IsInArray(Item, Arr_) Then ' Check if item is not in the pseudo set then add it
+        If Not IsIn(Item, Arr_) Then ' Check if item is not in the pseudo set then add it
             Arr_(Count) = Item
             Count = Count + 1
         End If
@@ -179,12 +183,12 @@ Public Function RemoveDuplicates(Arr As Variant) As Variant
 End Function
 
 '# Checks if an element is in an array
-Public Function IsInArray(Elem As Variant, Arr As Variant) As Variant
-    IsInArray = False
+Public Function IsIn(Elem As Variant, Arr As Variant) As Variant
+    IsIn = False
     Dim Item As Variant
     For Each Item In AsArray(Arr)
-        IsInArray = Equal_(Item, Elem)
-        If IsInArray Then Exit Function
+        IsIn = Equal_(Item, Elem)
+        If IsIn Then Exit Function
     Next
 End Function
 
@@ -284,4 +288,55 @@ Public Function CreateWithSize(Size As Long) As Variant
     Arr_ = Array()
     ReDim Arr_(0 To Size - 1)
     CreateWithSize = Arr_
+End Function
+
+
+'# This function returns a subarray of an array by giving its indices
+'# This is like a SELECT for Array
+'! If there is an index that is out of bounds, this will throw that error
+Public Function Projection(Indices As Variant, Arr As Variant) As Variant
+    If ArrayUtil.IsEmptyArray(Indices) Or ArrayUtil.IsEmptyArray(Arr) Then
+        Projection = Array()
+        Exit Function
+    End If
+    
+    Dim Arr_ As Variant, Index As Long
+    Arr_ = CloneSize(Indices)
+    
+    For Index = 0 To UBound(Indices)
+        Arr_(Index) = Arr(Indices(Index))
+    Next
+    
+    Projection = Arr_
+End Function
+
+'# Creates a set difference with a rudimentary arrays
+Public Function SetDifference(Subset_ As Variant, Set_ As Variant) As Variant
+    If ArrayUtil.IsEmptyArray(Subset_) Or ArrayUtil.IsEmptyArray(Set_) Then
+        SetDifference = Array()
+        Exit Function
+    End If
+    
+    Dim Index As Long, Count As Long, Elem As Variant, ArrSet_ As Variant
+    ArrSet_ = CloneSize(Set_)
+    For Index = 0 To UBound(Set_)
+        Elem = Set_(Index)
+        If Not IsIn(Elem, Subset_) Then
+            ArrSet_(Count) = Elem
+            Count = Count + 1
+        End If
+    Next
+    
+    If Count = 0 Then
+        ArrSet_ = Array()
+    Else
+        ReDim Preserve ArrSet_(0 To Count - 1)
+    End If
+    
+    SetDifference = ArrSet_
+End Function
+
+'# Creates an empty array
+Public Function CreateEmptyArray() As Variant
+    CreateEmptyArray = Array()
 End Function
