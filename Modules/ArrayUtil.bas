@@ -45,8 +45,15 @@ Public Function ShiftBase(Arr As Variant, Optional Index As Long = 0) As Variant
     
     Offset = Index - Lower
     
-    ReDim Preserve Arr_(Lower + Offset To Upper + Offset)  'Shift base
-    ShiftBase = Arr_
+    Dim Shift_ As Variant, SIndex As Long
+    Shift_ = Array()
+    ReDim Preserve Shift_((Lower + Offset) To (Upper + Offset))
+    For SIndex = LBound(Shift_) To UBound(Shift_)
+        Shift_(SIndex) = Arr_(SIndex - Offset)
+    Next
+    
+    'ReDim Preserve Arr_((Lower + Offset) To (Upper + Offset))  'Shift base
+    ShiftBase = Shift_
 End Function
 
 '# This is basically reframes ShiftBase() as the array normalizer for this library
@@ -340,3 +347,5 @@ End Function
 Public Function CreateEmptyArray() As Variant
     CreateEmptyArray = Array()
 End Function
+
+
