@@ -63,15 +63,6 @@ Public Function AsColumnArray(Rng As Range, ColIndex As Long) As Variant
     AsColumnArray = Arr
 End Function
 
-
-'# A pair of function to get row and column count from a range
-Public Function GetRowCount(Rng As Range) As Long
-    GetRowCount = Rng.Rows.CountLarge
-End Function
-Public Function GetColumnCount(Rng As Range) As Long
-    GetColumnCount = Rng.Columns.CountLarge
-End Function
-
 '# Extended function of AsColumnArray where an array of indices are given
 '# This is tweaked for some performance aspect
 Public Function AsColumnArrays(Rng As Range, ColIndices As Variant) As Variant
@@ -79,14 +70,14 @@ Public Function AsColumnArrays(Rng As Range, ColIndices As Variant) As Variant
         AsColumnArrays = Array()
         Exit Function
     End If
-
+    
     Dim Arr_ As Variant, Cols_ As Variant, Indices_ As Variant, Index As Long, ColIndex As Long
     Arr_ = ArrayUtil.ShiftBase(ArrayUtil.CreateWithSize(RangeUtil.GetRowCount(Rng)), 1)
     Cols_ = ArrayUtil.ShiftBase(ArrayUtil.CloneSize(ColIndices), 1)
     Indices_ = ArrayUtil.ShiftBase(ColIndices, 1)
     For Index = 1 To UBound(Cols_)
         ColIndex = Indices_(Index)
-        Cols_(Index) = Rng.Columns(ColIndex).Value
+        Cols_(Index) = AppUtil.WrapRangeAsArray(Rng.Columns(ColIndex).Value)
     Next
     
     Dim TempArr_ As Variant, RowIndex As Long, TempIndex As Long, ColSize As Long
@@ -101,3 +92,14 @@ Public Function AsColumnArrays(Rng As Range, ColIndices As Variant) As Variant
     
     AsColumnArrays = Arr_
 End Function
+
+
+'# A pair of function to get row and column count from a range
+Public Function GetRowCount(Rng As Range) As Long
+    GetRowCount = Rng.Rows.CountLarge
+End Function
+Public Function GetColumnCount(Rng As Range) As Long
+    GetColumnCount = Rng.Columns.CountLarge
+End Function
+
+
