@@ -1,4 +1,4 @@
-butil
+xlbutil
 =====
 
 This is a set of VBA utility modules you can use for your project
@@ -8,9 +8,9 @@ I always needed a bunch of utility modules that I make and I make them a lot of 
 **To God I plant this seed, may it turn into a forest**
 
 quick start
-====
+-----------
 
-This is a <a href="https://github.com/FrancisMurillo/chip">chip</a> project, so you can download this via *Chip.ChipOnFromRepo "Butil"* or if you want to install it via importing module all utility modules. I suggest using the chip as it is more canonical to the project.
+This is a <a href="https://github.com/FrancisMurillo/xlchip">chip</a> project, so you can download this via *Chip.ChipOnFromRepo "Butil"* or if you want to install it via importing module all utility modules. I suggest using the chip as it is more canonical to the project.
 
 And include in your project references the following, not really needed but this is needed to run chip.
 
