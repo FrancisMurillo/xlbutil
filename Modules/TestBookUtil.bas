@@ -12,5 +12,5 @@ Public Sub TestCheckBook()
         
     VaseAssert.AssertTrue _
         BookUtil.CheckBook(ActiveWorkbook.Path & Application.PathSeparator & _
-                           "butil-src" & Application.PathSeparator & "butil-RELEASE.xlsm")
+                           "xlbutil-src" & Application.PathSeparator & "xlbutil-RELEASE.xlsm")
 End Sub
