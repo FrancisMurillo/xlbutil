@@ -31,6 +31,7 @@ Public Sub InitializeVariables()
     IgnoreExportModules = Array( _
         "Chip*", "Vase*", "Wheat*", _
         "Sheet*", "ThisWorkbook", _
+        "*_", _
         "Sandbox")
     IgnoreExceptExportModules = Array( _
         "ChipInfo", "ChipInit", "WheatConfig", _

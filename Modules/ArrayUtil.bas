@@ -1,5 +1,4 @@
 Attribute VB_Name = "ArrayUtil"
-
 '===========================
 '--- Module Contract     ---
 '===========================

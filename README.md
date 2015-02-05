@@ -28,3 +28,4 @@ So far here are the utilities made.
 2. **AssertUtil** - Nothing fancy here, just some methods to help with assertion in particular vase 
 3. **SheetUtil** - A set of sheet manipulation methods which happen a lot.
 4. **RangeUtil** - Likewise supporting SheetUtil is this bad boy handling ranges
+5. **TupleUtil** - The pseudo-tuples for vba. Tuples are arrays of arrays, a personification of multidimensional arrays if you will, and this offers utilities on this object such as filtering and pruning. Primarily in tandem with ranges and database rows for easier manipulation. 
