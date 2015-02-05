@@ -1,1 +1,1 @@
-COPY /Y ..\butil.xlsm .\butil-RELEASE.xlsm
+COPY /Y ..\xlbutil.xlsm .\xlbutil-RELEASE.xlsm
