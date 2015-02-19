@@ -285,3 +285,33 @@ Public Sub TestTakeN()
     
     Ping_
 End Sub
+
+Public Sub TestFirstAndLast()
+    Dim Arr As Variant
+    Arr = Array(1, 2, 3)
+    
+    VaseAssert.AssertEqual _
+        ArrayUtil.First(Arr), 1
+    VaseAssert.AssertEqual _
+        ArrayUtil.Last(Arr), 3
+        
+    VaseAssert.AssertEqual _
+        ArrayUtil.First(Array()), Empty
+    VaseAssert.AssertEqual _
+        ArrayUtil.Last(Array()), Empty
+End Sub
+
+Public Sub TestPartitionByIndices()
+    Dim Arr As Variant, Parts As Variant
+    Arr = ArrayUtil.Range(0, 30, 3)
+    Parts = ArrayUtil.PartitionByIndices(Arr, Array(1, 3, 6))
+    
+    VaseAssert.AssertArraysEqual _
+        Parts(0), Array(0)
+    VaseAssert.AssertArraysEqual _
+        Parts(1), Array(3, 6)
+    VaseAssert.AssertArraysEqual _
+        Parts(2), Array(9, 12, 15)
+    VaseAssert.AssertArraysEqual _
+        Parts(3), Array(18, 21, 24, 27)
+End Sub

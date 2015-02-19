@@ -440,3 +440,63 @@ Public Function TakeN(N As Long, Arr As Variant) As Variant
 
     TakeN = Arr_
 End Function
+
+'# This function partitions into arrays into subarrays into its starting indices
+'P Indices: Assumes also indices is in increasing order or sort or this throws an error
+'! Not the fastest implementation
+'C No Zero Base Restriction; however, the index bounding is present
+'C Zero Base Return
+Public Function PartitionByIndices(Arr As Variant, Indices As Variant) As Variant
+    If IsEmptyArray(Arr) Then
+        PartitionByIndices = CreateEmptyArray()
+        Exit Function
+    End If
+
+    If IsEmptyArray(Indices) Then
+        PartitionByIndices = AsNormalArray(Arr)
+        Exit Function
+    End If
+    
+    Dim Parts As Variant, Ctr As Long, Index As Variant
+    Dim LArr As Variant, UArr As Variant, PrevIndex As Long
+    Parts = CreateWithSize(Size(Indices) + 1)
+    Ctr = 0
+    PrevIndex = LBound(Arr)
+    For Each Index In Indices
+        If Index <= PrevIndex Then ' Not in ascending sorted form or repeating indices
+            Err.Raise vbObjectError + ERR_OFFSET, ERR_SOURCE, "Range"
+            Stop
+        End If
+        
+        Parts(Ctr) = Slice(Arr, PrevIndex, CLng(Index))
+        
+        Ctr = Ctr + 1
+        PrevIndex = Index
+    Next
+    
+    Index = UBound(Arr)
+    If Index <= PrevIndex Then ' Not in ascending sorted form or repeating indices
+        Err.Raise vbObjectError + ERR_OFFSET, ERR_SOURCE, "Range"
+        Stop
+    End If
+    
+    Parts(Ctr) = Slice(Arr, PrevIndex, CLng(Index), InclusiveRange:=True)
+    
+    PartitionByIndices = Parts
+End Function
+
+'# These pairs of function just returns first and last value of an array, empty if empty array
+Public Function First(Arr As Variant) As Variant
+    If IsEmptyArray(Arr) Then
+        First = Empty
+    Else
+        First = Arr(LBound(Arr))
+    End If
+End Function
+Public Function Last(Arr As Variant) As Variant
+    If IsEmptyArray(Arr) Then
+        Last = Empty
+    Else
+        Last = Arr(UBound(Arr))
+    End If
+End Function
