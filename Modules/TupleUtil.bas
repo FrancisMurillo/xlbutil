@@ -2,21 +2,30 @@ Attribute VB_Name = "TupleUtil"
 '===========================
 '--- Module Contract     ---
 '===========================
-' Tuples are like Arrays but still under contention on how they function
-' Primarily, tuples are arrays that can have arrays as elements which differs from ArrayUtil.
+'# MODULE DEFINITION
+'# Tuples are the superset of Arrays
+'# They are arrays, they can be arrays of arrays.
+'# This super structure allow nested tuples and better handling of them.
+'#
+'# MODULE LIMITATION
+'# This definition is not performance friendly, so do not expect to use this on performance intensive application
+'#
+'# MODULE CONTRACT
+'# Tuples follow these rules
+'# 1. Data Types - Strings, Numbers, Dates, Tuples but NOT Objects(wrap it in a tuple)
+'# 2. Tuples are zero-indexed,
 
-'# This just splits a tuple array into a larger array of one tuple
-'# A transposition of sorts
-'# This follows the ArrayUtil contract
-Public Function TransposeTuples(Arr As Variant) As Variant
-    If ArrayUtil.IsEmptyArray(Arr) Then
+'# This transposes the rectangular tuples like matrix transposition
+'! Assumes TArr is a rectangular array or elements are arrays and are of equal sizes else this raises a runtime error
+Public Function Transpose(TArr As Variant) As Variant
+    If ArrayUtil.IsEmptyArray(TArr) Then
         TransposeTuples = Array()
         Exit Function
     End If
     
-    Dim Arr_ As Variant
+    Dim TArr_ As Variant
     Dim LeftArr As Variant, RightArr As Variant, Tuple As Variant, FirstElement As Variant
-    Arr_ = ArrayUtil.CloneSize(Arr)
+    TArr_ = ArrayUtil.CloneSize(TArr)
     FirstElement = Arr(0)
     Tuples = ArrayUtil.CloneSize(FirstElement)
     
@@ -33,6 +42,29 @@ Public Function TransposeTuples(Arr As Variant) As Variant
     Next
     
     TransposeTuples = Tuples
+End Function
+
+'===========================
+'--- Operator            ---
+'===========================
+
+'# Compares tuples
+'# This equates Empty and the empty array as the same since they are IsEmptyArray
+Public Function EqualTuple_(LeftTuple As Variant, RightTuple As Variant) As Boolean
+On Error Resume Next
+    If ArrayUtil.IsEmptyArray(LeftTuple) Then
+        EqualTuple_ = ArrayUtil.IsEmptyArray(RightTuple)
+    ElseIf IsArray(LeftTuple) Then
+    
+    Else
+        If IsArray(RightTuple) Then
+        
+        End If
+    End If
+    
+    If Err.Number <> 0 Then
+        Err.Clear
+    End If
 End Function
 
 '# Sorts an array of tuples based on its index
@@ -119,4 +151,5 @@ Public Function FilterTuples(Elem As Variant, ColIndex As Long, TArr As Variant)
     
     FilterTuples = Arr_
 End Function
+
 
