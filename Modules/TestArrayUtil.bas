@@ -257,8 +257,8 @@ Public Sub TestSlice()
         Array(1, True, Now_)
     VaseAssert.AssertArraysEqual _
         ArrayUtil.Slice(Arr, Start_:=4, Step_:=-2), _
+        Array(Now_, True)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Slice(Arr, Start_:=4, Step_:=-2, InclusiveRange:=True), _
         Array(Now_, True, 1)
-    
-    
-    Ping_
 End Sub
