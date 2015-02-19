@@ -4,7 +4,11 @@ Public Sub WriteInfo()
         "Microsoft Visual Basic for Applications Extensibility *", _
         "Microsoft Scripting Runtime")
     ChipReadInfo.Modules = Array( _
-        "ArrayUtil", "AssertUtil", "BookUtil", "RangeUtil")
+        "ArrayUtil", _
+        "AssertUtil", _
+        "BookUtil", _
+        "FileUtil", _
+        "RangeUtil")
 End Sub
 
 

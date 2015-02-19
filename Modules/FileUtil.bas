@@ -39,14 +39,12 @@ Public Function GetText(sFile As String) As String
     Dim FileEncoding As Encoding
     FileEncoding = DetectEncoding(sFile)
 
-    Debug.Print "File Encoding:" & FileEncoding
     Select Case FileEncoding
         Case ANSI, UNICODE
             GetText = ReadFile(sFile)
         Case Else
             GetText = ReadFileAsUTF8(sFile)
     End Select
-    
 End Function
 
 Public Function ReadFile(sFile As String) As String
