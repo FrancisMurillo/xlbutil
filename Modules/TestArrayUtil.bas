@@ -262,3 +262,26 @@ Public Sub TestSlice()
         ArrayUtil.Slice(Arr, Start_:=4, Step_:=-2, InclusiveRange:=True), _
         Array(Now_, True, 1)
 End Sub
+
+Public Sub TestTakeN()
+    Dim Arr As Variant
+    Arr = Array(1, "A", Empty)
+    
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.TakeN(0, Array())
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.TakeN(1, Array())
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.TakeN(-1, Array(1, 2, 3))
+        
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.TakeN(1, Arr), Array(1)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.TakeN(2, Arr), Array(1, "A")
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.TakeN(3, Arr), Array(1, "A", Empty)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.TakeN(4, Arr), Array(1, "A", Empty)
+    
+    Ping_
+End Sub

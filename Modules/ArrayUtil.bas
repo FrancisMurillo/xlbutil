@@ -97,7 +97,7 @@ Public Function CloneSize(Arr As Variant) As Variant
 End Function
 
 '# This returns the size of an array
-'! Input array can be of any base
+'C No Zero Base Restriction
 Public Function Size(Arr As Variant) As Long
     Size = 0
     If IsEmpty(Arr) Then Exit Function
@@ -307,8 +307,7 @@ End Function
 
 
 '# This function returns a subarray of an array by giving its indices
-'# This is like a SELECT for Array
-'! If there is an index that is out of bounds, this will throw that error
+'C No Zero Base Restriction; however,the indices must be within the bounds of the array, otherwise error
 Public Function Projection(Indices As Variant, Arr As Variant) As Variant
     If ArrayUtil.IsEmptyArray(Indices) Or ArrayUtil.IsEmptyArray(Arr) Then
         Projection = Array()
@@ -416,4 +415,28 @@ Public Function Print_(Arr As Variant, _
     
     Str_ = Str_ & EndBracket
     Print_ = Str_
+End Function
+
+'# Takes the first N items in an array
+'C No Zero Base Restriction
+Public Function TakeN(N As Long, Arr As Variant) As Variant
+    If IsEmptyArray(Arr) Then
+        TakeN = CreateEmptyArray()
+        Exit Function
+    End If
+
+    Dim Arr_ As Variant, Index As Long, Ctr As Long, Offset As Long, Size_ As Long, MaxSize As Long
+    Offset = LBound(Arr)
+    MaxSize = Size(Arr)
+    Size_ = N
+    
+    Size_ = IIf(MaxSize < Size_, MaxSize, Size_)
+    Arr_ = CreateWithSize(Size_)
+    If Size_ = 0 Then Exit Function
+    
+    For Ctr = 0 To Size_ - 1
+        Arr_(Ctr) = Arr(Offset + Ctr)
+    Next
+
+    TakeN = Arr_
 End Function
