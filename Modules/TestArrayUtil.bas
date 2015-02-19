@@ -149,6 +149,12 @@ Public Sub TestJoinArrays()
 End Sub
 
 Public Sub TestRange()
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.Range()
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(InclusiveRange:=True), _
+        Array(0)
+        
     VaseAssert.AssertArraysEqual _
         ArrayUtil.Range(Stop_:=10), _
         Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -167,11 +173,24 @@ Public Sub TestRange()
         Array(10, 7, 4, 1)
     VaseAssert.AssertArraysEqual _
         ArrayUtil.Range(Start_:=10, Stop_:=1, Step_:=-3), _
-        Array(10, 7, 4, 1)
+        Array(10, 7, 4)
     VaseAssert.AssertArraysEqual _
         ArrayUtil.Range(Start_:=10, Stop_:=2, Step_:=-3), _
         Array(10, 7, 4)
     
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Start_:=5, Stop_:=11, Step_:=2, InclusiveRange:=True), _
+        Array(5, 7, 9, 11)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Start_:=5, Stop_:=11, Step_:=2, InclusiveRange:=False), _
+        Array(5, 7, 9)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Start_:=10, Stop_:=1, Step_:=-3, InclusiveRange:=True), _
+        Array(10, 7, 4, 1)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Range(Start_:=10, Stop_:=1, Step_:=-3, InclusiveRange:=False), _
+        Array(10, 7, 4)
+        
     Ping_
 End Sub
 
@@ -220,6 +239,26 @@ Public Sub TestSetDifference()
         VaseAssert.AssertTrue _
             ArrayUtil.IsIn(Elem, Diff)
     Next
+End Sub
+
+Public Sub TestSlice()
+    Dim Arr As Variant, Now_ As Date
+    Now_ = Now
+    Arr = Array(1, "A", True, Array(), Now_)
+
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.Slice(Array())
+    
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Slice(Arr, 1, 3), _
+        Array("A", True)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Slice(Arr, 0, 5, 2), _
+        Array(1, True, Now_)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Slice(Arr, Start_:=4, Step_:=-2), _
+        Array(Now_, True, 1)
+    
     
     Ping_
 End Sub

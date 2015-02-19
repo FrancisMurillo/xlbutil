@@ -83,7 +83,7 @@ Public Function AsArray(Arr As Variant) As Variant
 End Function
 
 '# This returns an array as the same size as the array
-'! Input array can be of any base
+'C No Zero Base Restriction
 Public Function CloneSize(Arr As Variant) As Variant
     If IsEmptyArray(Arr) Then
         CloneSize = Array()
@@ -247,9 +247,11 @@ End Function
 
 '# Creates an range array similar to Python
 '# Used in creating the mapping values
-Public Function Range(Optional Start_ As Long = 0, Optional Stop_ As Long = 0, Optional Step_ As Long = 1)
+'P InclusiveRange: Specifies if Stop_ is part of the range, not the Pythonic behavior but useful for VBA
+Public Function Range(Optional Start_ As Long = 0, Optional Stop_ As Long = 0, Optional Step_ As Long = 1, _
+                    Optional InclusiveRange As Boolean = False)
     If Start_ = Stop_ Then ' A one-element range
-        Range = Array(Start_)
+        Range = IIf(InclusiveRange, Array(Start_), Array())
         Exit Function
     End If
     
@@ -261,13 +263,14 @@ Public Function Range(Optional Start_ As Long = 0, Optional Stop_ As Long = 0, O
         Err.Raise vbObjectError + ERR_OFFSET, ERR_SOURCE, "Range"
     End If
     
-    Dim Index As Long, Counter As Long
+    Dim Index As Long, Counter As Long, InclusionOffset As Long
     Dim Size As Long, Rng_ As Variant
     Counter = Start_
+    InclusionOffset = IIf(InclusiveRange, 0, 1)
     If Step_ > 0 Then
-        Size = CLng(Abs(((Stop_ - 1) - Start_) / Step_))
+        Size = RoundDown(Abs(((Stop_ - InclusionOffset) - Start_) / Step_))
     Else
-        Size = CLng(Abs(((Start_ - 1) - Stop_) / Step_))
+        Size = RoundDown(Abs(((Start_ - InclusionOffset) - Stop_) / Step_))
     End If
 
     
@@ -279,6 +282,12 @@ Public Function Range(Optional Start_ As Long = 0, Optional Stop_ As Long = 0, O
     Next
     
     Range = Rng_
+End Function
+
+'# Helper function to round numbers down to the nearest whole number
+'# Floor like functionality
+Private Function RoundDown(Val As Double) As Long
+    RoundDown = Int(Val / 1) * 1
 End Function
 
 
@@ -342,9 +351,69 @@ Public Function SetDifference(Subset_ As Variant, Set_ As Variant) As Variant
     SetDifference = ArrSet_
 End Function
 
-'# Creates an empty array
+'# Creates an empty array, just to standardize the creation of an empty array(not really important)
 Public Function CreateEmptyArray() As Variant
     CreateEmptyArray = Array()
 End Function
 
 
+'# Slice an array, like Python; this combines Range and Projection, mind both their warnings
+'C No Zero Base Restriction
+Public Function Slice(Arr As Variant, _
+                        Optional Start_ As Long = 0, Optional Stop_ As Long = 0, Optional Step_ As Long = 1, _
+                        Optional InclusiveRange As Boolean = False)
+    If ArrayUtil.IsEmptyArray(Arr) Then
+        Slice = ArrayUtil.CreateEmptyArray()
+        Exit Function
+    End If
+
+    Dim Rng As Variant
+    Rng = ArrayUtil.Range(Start_:=Start_, Stop_:=Stop_, Step_:=Step_, InclusiveRange:=InclusiveRange)
+
+    Slice = ArrayUtil.Projection(Rng, Arr)
+End Function
+
+
+'# Returns an output ready display of an array, with several options to experiment on
+'# This also recurses on arrays of arrays
+'C No Zero Base Restriction
+Public Function Print_(Arr As Variant, _
+                        Optional Delimiter As String = ", ", _
+                        Optional StartBracket As String = "[", Optional EndBracket As String = "]", _
+                        Optional QuoteCharacter As String = """", _
+                        Optional DateFormat As String = "", _
+                        Optional ObjectString As String = "$OBJ")
+    Dim Str_ As String, Val As Variant, ItemStr_ As String, IsFirstItem As Boolean
+    Str_ = StartBracket
+    IsFirstItem = True
+    For Each Val In Arr
+        If IsFirstItem Then
+            IsFirstItem = False
+        Else
+            Str_ = Str_ & Delimiter
+        End If
+        
+        If IsArray(Val) Then
+            ItemStr_ = Print_(Val, _
+                        Delimiter:=Delimiter, _
+                        StartBracket:=StartBracket, EndBracket:=EndBracket, _
+                        QuoteCharacter:=QuoteCharacter, _
+                        DateFormat:=DateFormat, _
+                        ObjectString:=ObjectString)
+        ElseIf IsDate(Val) Then
+            ItemStr_ = Format(Val, DateFormat)
+        ElseIf IsNumeric(Val) Then
+            ItemStr_ = Val
+        ElseIf IsObject(Val) Then
+            ItemStr_ = ObjectString
+        ElseIf IsEmpty(Val) Then
+            ItemStr_ = ""
+        Else
+            ItemStr_ = QuoteCharacter & Val & QuoteCharacter
+        End If
+        Str_ = Str_ & ItemStr_
+    Next
+    
+    Str_ = Str_ & EndBracket
+    Print_ = Str_
+End Function
