@@ -22,3 +22,27 @@ Public Function TrimAll(SArr As Variant) As Variant
     TrimAll = Arr_
 End Function
 
+'# This checks if a string is within a string array with the like operator
+'C No Zero Base Restriction
+Public Function IsInLike(Pattern As String, SArr As Variant, _
+                    Optional IgnoreCase As Boolean = False) As Boolean
+    IsInLike = False
+    If ArrayUtil.IsEmptyArray(SArr) Then _
+        Exit Function
+
+    Dim Match As Variant, SMatch As String, Pattern_
+    Pattern_ = Pattern
+    If IgnoreCase Then _
+        Pattern_ = UCase(Pattern)
+        
+    For Each Match In SArr
+        SMatch = Match
+        If IgnoreCase Then _
+            SMatch = UCase(SMatch)
+            
+        If SMatch Like Pattern_ Then
+            IsInLike = True
+            Exit Function
+        End If
+    Next
+End Function

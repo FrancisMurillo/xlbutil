@@ -315,3 +315,63 @@ Public Sub TestPartitionByIndices()
     VaseAssert.AssertArraysEqual _
         Parts(3), Array(18, 21, 24, 27)
 End Sub
+
+Public Sub TestIsAnyEmptyArray()
+    VaseAssert.AssertFalse _
+        ArrayUtil.IsAnyEmptyArray( _
+            Array(True), Array(False), Array(0))
+    VaseAssert.AssertTrue _
+        ArrayUtil.IsAnyEmptyArray( _
+            Array(True), Array(False), Array())
+            
+    VaseAssert.AssertFalse _
+        ArrayUtil.IsAnyEmptyArray( _
+            Array(True), Array(False))
+    VaseAssert.AssertTrue _
+        ArrayUtil.IsAnyEmptyArray( _
+            Array(True), Array())
+            
+    VaseAssert.AssertFalse _
+        ArrayUtil.IsAnyEmptyArray( _
+            Array(True))
+    VaseAssert.AssertTrue _
+        ArrayUtil.IsAnyEmptyArray( _
+            Array())
+End Sub
+
+Public Sub TestZip()
+    Dim Arr As Variant
+    
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.Zip( _
+            ArrayUtil.Range(0, 1), _
+            ArrayUtil.Range(0, 2), _
+            Array())
+    
+    Dim ActArr As Variant
+    ActArr = ArrayUtil.Zip( _
+                ArrayUtil.Range(0, 5, 3), _
+                ArrayUtil.Range(-10, 10, 7))
+    VaseAssert.AssertArraySize 2, ActArr
+    VaseAssert.AssertArraysEqual _
+        ActArr(0), _
+        Array(0, -10)
+    VaseAssert.AssertArraysEqual _
+        ActArr(1), _
+        Array(3, -3)
+End Sub
+
+Public Sub TestChain()
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.Chain( _
+            Array(), Array(), Array())
+    
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Chain( _
+            ArrayUtil.Range(0, 4, 2), _
+            ArrayUtil.Range(4, 8, 2), _
+            ArrayUtil.Range(8, 12, 2)), _
+        ArrayUtil.Range(0, 12, 2)
+    
+    Ping_
+End Sub
