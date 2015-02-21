@@ -40,3 +40,18 @@ Public Sub And_(LVal As Boolean, RVal As Boolean)
     Fn.Result = (LVal And RVal)
 End Sub
 
+
+' ## String Operator
+'
+' String operators
+
+'# Concatenates two strings
+Public Sub Concat_(LStr As String, RStr As String)
+    Fn.Result = (LStr & RStr)
+End Sub
+
+'# Checks if one string is like the other
+Public Sub Like_(LStr As String, RPat As String)
+    Fn.Result = LStr Like RPat
+End Sub
+

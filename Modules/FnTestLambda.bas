@@ -50,4 +50,8 @@ Public Sub EmptyCount_(Acc As Long, Elem As Variant)
     Fn.Result = Acc + IIf(IsEmpty(Elem), 1, 0)
 End Sub
 
+'# Random tripet formula
+Public Sub Formula_(Tuple As Variant)
+    Fn.Result = NumericArrayUtil.Product(Tuple)
+End Sub
 

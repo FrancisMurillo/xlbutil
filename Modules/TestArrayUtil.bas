@@ -263,29 +263,6 @@ Public Sub TestSlice()
         Array(Now_, True, 1)
 End Sub
 
-Public Sub TestTakeN()
-    Dim Arr As Variant
-    Arr = Array(1, "A", Empty)
-    
-    VaseAssert.AssertEmptyArray _
-        ArrayUtil.TakeN(0, Array())
-    VaseAssert.AssertEmptyArray _
-        ArrayUtil.TakeN(1, Array())
-    VaseAssert.AssertEmptyArray _
-        ArrayUtil.TakeN(-1, Array(1, 2, 3))
-        
-    VaseAssert.AssertArraysEqual _
-        ArrayUtil.TakeN(1, Arr), Array(1)
-    VaseAssert.AssertArraysEqual _
-        ArrayUtil.TakeN(2, Arr), Array(1, "A")
-    VaseAssert.AssertArraysEqual _
-        ArrayUtil.TakeN(3, Arr), Array(1, "A", Empty)
-    VaseAssert.AssertArraysEqual _
-        ArrayUtil.TakeN(4, Arr), Array(1, "A", Empty)
-    
-    Ping_
-End Sub
-
 Public Sub TestFirstAndLast()
     Dim Arr As Variant
     Arr = Array(1, 2, 3)
@@ -337,39 +314,4 @@ Public Sub TestIsAnyEmptyArray()
     VaseAssert.AssertTrue _
         ArrayUtil.IsAnyEmptyArray( _
             Array())
-End Sub
-
-Public Sub TestZip()
-    Dim Arr As Variant
-    
-    VaseAssert.AssertEmptyArray _
-        ArrayUtil.Zip( _
-            ArrayUtil.Range(0, 1), _
-            ArrayUtil.Range(0, 2), _
-            Array())
-    
-    Dim ActArr As Variant
-    ActArr = ArrayUtil.Zip( _
-                ArrayUtil.Range(0, 5, 3), _
-                ArrayUtil.Range(-10, 10, 7))
-    VaseAssert.AssertArraySize 2, ActArr
-    VaseAssert.AssertArraysEqual _
-        ActArr(0), _
-        Array(0, -10)
-    VaseAssert.AssertArraysEqual _
-        ActArr(1), _
-        Array(3, -3)
-End Sub
-
-Public Sub TestChain()
-    VaseAssert.AssertEmptyArray _
-        ArrayUtil.Chain( _
-            Array(), Array(), Array())
-    
-    VaseAssert.AssertArraysEqual _
-        ArrayUtil.Chain( _
-            ArrayUtil.Range(0, 4, 2), _
-            ArrayUtil.Range(4, 8, 2), _
-            ArrayUtil.Range(8, 12, 2)), _
-        ArrayUtil.Range(0, 12, 2)
 End Sub

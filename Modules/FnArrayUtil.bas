@@ -2,22 +2,20 @@ Attribute VB_Name = "FnArrayUtil"
 ' Functional Array Utility
 ' ------------------------
 '
-' These functions support a functional programming style although at the cost of performance
-' Primarily these are the familiar map, filter and reduce
-' These are added with a suffix of _ to avoid name clashes with any original function and to say they are functionally notated
+' These utilize the pseudo functions of Fn, rather this gives you the reason to use it.
+'
+' Stemming from ArrayUtil and Functional Programming, it follows its convention and nuance along with Fn's.
+' These methods are a collection of well known Functional methods, happy programming
 '
 ' # Module Contract
 '
 ' MethodNames should be fully qualified as there might be conflict if there is another with the same name.
 ' Likewise, said methods should follow the argument and return restriction although they are variant
 ' The type notation is [Arg1, Arg2, ...] -> [Ret], this could be [Var] -> [Int]
+
+' ## Core Functions
 '
-' # Module Restriction
-'
-' # Module Dependency
-'
-' Only Fn is required to get the result.
-' As an added bonus to use that module as a storage
+' The core of functional programs: Map, Reduce and Filter
 
 '# This applies a new array with each element applied to a function
 'P MethodName: A function of [Var]->[Var]
@@ -92,3 +90,103 @@ Public Function Reduce_(MethodName As String, Arr As Variant, Optional Initial A
     
     Reduce_ = Acc_
 End Function
+
+' ## Functional Methods
+'
+' These methods are implementations of well known functional methods such as Zip, Take, Drop and so on.
+
+'# Zip combines several arrays into an arrays of tuple
+'C Base Independent
+'R Zero Base
+Public Function Zip(Arrs As Variant) As Variant
+    If ArrayUtil.IsEmptyArray(Arrs) Then
+        Zip = ArrayUtil.CreateEmptyArray()
+        Exit Function
+    End If
+    
+    Dim MinSize As Long, Arr_ As Variant, Size_ As Long
+    MinSize = Size(Arrs(0))
+    For Each Arr_ In Arrs
+        If IsEmptyArray(Arr_) Then
+            Zip = ArrayUtil.CreateEmptyArray()
+            Exit Function
+        Else
+            Size_ = Size(Arr_)
+            MinSize = IIf(Size_ < MinSize, Size_, MinSize)
+        End If
+    Next
+    
+    Dim ZArr As Variant, Tuple As Variant, Index As Long, TIndex As Long, ElemArr As Variant
+    ZArr = CreateWithSize(MinSize)
+    Tuple = CreateWithSize(UBound(Arrs) + 1)
+    
+    For Index = 0 To UBound(ZArr)
+        For TIndex = 0 To UBound(Arrs)
+            Tuple(TIndex) = Arrs(TIndex)(LBound(Arrs(TIndex)) + Index)
+        Next
+        ZArr(Index) = Tuple
+    Next
+    
+    Zip = ZArr
+End Function
+
+'# Zips arrays and applies a function on each element.
+'# Zip + Map basically with the same requirement
+Public Function ZipWith_(MethodName As String, Arrs As Variant) As Variant
+    ZipWith_ = Map_(MethodName, Zip(Arrs))
+End Function
+
+'# Joins arrays into one bigger array, pretty much join on each
+'# Although not really Functional Method, it falls under the iterators of Python
+'C Base Independent
+'R Zero Base
+Public Function Chain(ParamArray Arr() As Variant)
+    Dim CArr As Variant, TSize As Long, Arr_ As Variant, CIndex As Long, Elem_ As Variant
+    TSize = 0
+    For Each Arr_ In Arr
+        TSize = TSize + Size(Arr_)
+    Next
+    
+    If TSize = 0 Then
+        Chain = ArrayUtil.CreateEmptyArray()
+        Exit Function
+    End If
+    
+    CArr = CreateWithSize(TSize)
+    CIndex = 0
+    For Each Arr_ In Arr
+        For Each Elem_ In Arr_
+            CArr(CIndex) = Elem_
+            CIndex = CIndex + 1
+        Next
+    Next
+    Chain = CArr
+End Function
+
+'# Takes the first N items in an array.
+'# If it exceeds the number of elements, it returns all elements
+'C Base Independent
+'R Zero Base
+Public Function TakeN(N As Long, Arr As Variant) As Variant
+    If IsEmptyArray(Arr) Then
+        TakeN = ArrayUtil.CreateEmptyArray()
+        Exit Function
+    End If
+
+    Dim Arr_ As Variant, Index As Long, Ctr As Long, Offset As Long, Size_ As Long, MaxSize As Long
+    Offset = LBound(Arr)
+    MaxSize = Size(Arr)
+    Size_ = N
+    
+    Size_ = IIf(MaxSize < Size_, MaxSize, Size_)
+    Arr_ = CreateWithSize(Size_)
+    If Size_ = 0 Then Exit Function
+    
+    For Ctr = 0 To Size_ - 1
+        Arr_(Ctr) = Arr(Offset + Ctr)
+    Next
+
+    TakeN = Arr_
+End Function
+
+

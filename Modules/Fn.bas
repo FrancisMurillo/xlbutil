@@ -4,6 +4,8 @@ Attribute VB_Name = "Fn"
 '
 ' This module provides a mechanism to provide pseudo lambda in VBA.
 '
+' # Module Definition
+'
 ' Since we don't have first class functions, their names could be their pointers instead.
 ' By using Application.Run, we can invoke the function.
 ' Sadly, Application.Run has some limitation like not having a return value;
@@ -34,6 +36,10 @@ Attribute VB_Name = "Fn"
 ' It gives you the ability to invoke them with cool functional methods like Map, Reduce and Filter.
 ' If you tasted the first kiss of functional programming, this is a little drop of heaven.
 ' This is better than doing procedural and crappy OO.
+'
+' Modules with the Fn prefix(except this one) utilize this mechanism. If you are making your own, you should too for convention.
+' Methods utilizing the Fn.Invoke should be placed in the modules with Fn and end with undersocre for convention.
+' Not a requirement, but helps with familiarity although I use this convention as well to avoid naming conflicts.
 '
 ' Word of warning, this mechanism trades flexibility for performance.
 ' So when using this for performance critical aspects, take of your gloves and get your hands dirty.
@@ -149,5 +155,3 @@ ErrHandler:
         Err.Raise vbObjectError + ERR_OFFSET, ERR_SOURCE, MethodName & " caused an error: " & Err.Description
     End If
 End Function
-
-
