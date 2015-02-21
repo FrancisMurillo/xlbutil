@@ -44,3 +44,24 @@ Public Function TestFilter_()
         FnArrayUtil.Filter_("FnTestLambda.True_", VarArr), _
         VarArr
 End Function
+
+Public Sub TestReduce()
+    Dim NumArr As Variant, StrArr As Variant, VarArr As Variant
+    NumArr = Array(1, 2, 3)
+    StrArr = Array("I", "Me", "Mine")
+    VarArr = Array(1, "2", True, Empty)
+    
+    VaseAssert.AssertTrue _
+        IsEmpty(FnArrayUtil.Reduce_("", Array()))
+
+    VaseAssert.AssertEqual _
+        FnArrayUtil.Reduce_("FnTestLambda.Add_", NumArr), _
+        6
+    VaseAssert.AssertEqual _
+        FnArrayUtil.Reduce_("FnTestLambda.Concat_", StrArr, "Msg:"), _
+        "Msg:" & Join(StrArr, "")
+    VaseAssert.AssertEqual _
+        FnArrayUtil.Reduce_("FnTestLambda.EmptyCount_", VarArr, 0), _
+        1
+    Ping_
+End Sub

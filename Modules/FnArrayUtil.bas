@@ -67,3 +67,31 @@ Public Function Filter_(MethodName As String, Arr As Variant)
     
     Filter_ = Arr_
 End Function
+
+
+'# This computes a total for an array
+'# This is foldl in functional literature
+'P MethodName: An operator function [Var(Acc), Var(Elem)] -> [Var]
+'P             Where Acc is the accumulator and elem is the element in question
+'P Initial: An optionall value indicating a start value,
+'P          if this is empty, the accumulator starts with the first element in the array and starts counting at the second;
+'P          otherwise with this
+'R Zero Base
+Public Function Reduce_(MethodName As String, Arr As Variant, Optional Initial As Variant = Empty) As Variant
+    If ArrayUtil.IsEmptyArray(Arr) Then
+        Reduce_ = Empty
+        Exit Function
+    End If
+    
+    Dim Acc_ As Variant, Index As Long, StartIndex As Long, Elem_ As Variant, IsFirst As Boolean, UseFirst As Boolean
+    UseFirst = IsEmpty(Initial)
+    Acc_ = IIf(UseFirst, Arr(0), Initial)
+    StartIndex = LBound(Arr) + IIf(UseFirst, 1, 0)
+    For Index = StartIndex To UBound(Arr)
+        Elem_ = Arr(Index)
+        Application.Run MethodName, Acc_, Elem_
+        Acc_ = FnLambda.Result
+    Next
+    
+    Reduce_ = Acc_
+End Function

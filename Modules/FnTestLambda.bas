@@ -34,3 +34,20 @@ End Sub
 Public Sub True_(Val As Variant)
     FnLambda.Result = True
 End Sub
+
+'# Adds two numbers
+Public Sub Add_(Acc As Long, Elem As Long)
+    FnLambda.Result = Acc + Elem
+End Sub
+
+'# Concats strings
+Public Sub Concat_(Acc As String, Elem As String)
+    FnLambda.Result = Acc & Elem
+End Sub
+
+'# Makes Empty elements countable
+Public Sub EmptyCount_(Acc As Long, Elem As Variant)
+    FnLambda.Result = Acc + IIf(IsEmpty(Elem), 1, 0)
+End Sub
+
+
