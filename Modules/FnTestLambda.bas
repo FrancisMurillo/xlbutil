@@ -7,47 +7,47 @@ Attribute VB_Name = "FnTestLambda"
 
 '# Turns a number to its negative
 Public Sub Negative_(Val As Long)
-    FnLambda.Result = -1 * Val
+    Fn.Result = -1 * Val
 End Sub
 
 '# Adds a prefix to a string, 'Pre: ' prefix
 Public Sub Prefix_(Val As String)
-    FnLambda.Result = "Pre: " & Val
+    Fn.Result = "Pre: " & Val
 End Sub
 
 '# Just wraps the value into an array
 Public Sub WrapArray_(Val As Variant)
-    FnLambda.Result = Array(Val)
+    Fn.Result = Array(Val)
 End Sub
 
 '# Accepts only 2
 Public Sub IsTwo_(Val As Long)
-    FnLambda.Result = (Val = 2)
+    Fn.Result = (Val = 2)
 End Sub
 
 '# Accepts only Francis
 Public Sub IsFrancis_(Val As String)
-    FnLambda.Result = (Val = "Francis")
+    Fn.Result = (Val = "Francis")
 End Sub
 
 '# Accepts all, a default filter for All
 Public Sub True_(Val As Variant)
-    FnLambda.Result = True
+    Fn.Result = True
 End Sub
 
 '# Adds two numbers
 Public Sub Add_(Acc As Long, Elem As Long)
-    FnLambda.Result = Acc + Elem
+    Fn.Result = Acc + Elem
 End Sub
 
 '# Concats strings
 Public Sub Concat_(Acc As String, Elem As String)
-    FnLambda.Result = Acc & Elem
+    Fn.Result = Acc & Elem
 End Sub
 
 '# Makes Empty elements countable
 Public Sub EmptyCount_(Acc As Long, Elem As Variant)
-    FnLambda.Result = Acc + IIf(IsEmpty(Elem), 1, 0)
+    Fn.Result = Acc + IIf(IsEmpty(Elem), 1, 0)
 End Sub
 
 

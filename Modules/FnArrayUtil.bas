@@ -16,7 +16,7 @@ Attribute VB_Name = "FnArrayUtil"
 '
 ' # Module Dependency
 '
-' Only FnLambda is required to get the result.
+' Only Fn is required to get the result.
 ' As an added bonus to use that module as a storage
 
 '# This applies a new array with each element applied to a function
@@ -33,8 +33,7 @@ Public Function Map_(MethodName As String, Arr As Variant) As Variant
 
     For Index = LBound(Arr_) To UBound(Arr_)
         Elem_ = Arr(Index)
-        Application.Run MethodName, Elem_
-        Arr_(Index) = FnLambda.Result
+        Arr_(Index) = Fn.Invoke(MethodName, Array(Elem_))
     Next
     
     Map_ = Arr_
@@ -52,8 +51,7 @@ Public Function Filter_(MethodName As String, Arr As Variant)
     Dim Arr_ As Variant, Index As Long, Elem_ As Variant
     Arr_ = ArrayUtil.CreateWithSize(ArrayUtil.Size(Arr))
     For Each Elem_ In Arr
-        Application.Run MethodName, Elem_
-        If Result Then
+        If Fn.Invoke(MethodName, Array(Elem_)) Then
             Arr_(Index) = Elem_
             Index = Index + 1
         End If
@@ -89,8 +87,7 @@ Public Function Reduce_(MethodName As String, Arr As Variant, Optional Initial A
     StartIndex = LBound(Arr) + IIf(UseFirst, 1, 0)
     For Index = StartIndex To UBound(Arr)
         Elem_ = Arr(Index)
-        Application.Run MethodName, Acc_, Elem_
-        Acc_ = FnLambda.Result
+        Acc_ = Fn.Invoke(MethodName, Array(Acc_, Elem_))
     Next
     
     Reduce_ = Acc_

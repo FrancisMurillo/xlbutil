@@ -63,5 +63,4 @@ Public Sub TestReduce()
     VaseAssert.AssertEqual _
         FnArrayUtil.Reduce_("FnTestLambda.EmptyCount_", VarArr, 0), _
         1
-    Ping_
 End Sub
