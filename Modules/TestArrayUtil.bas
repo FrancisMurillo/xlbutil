@@ -372,6 +372,4 @@ Public Sub TestChain()
             ArrayUtil.Range(4, 8, 2), _
             ArrayUtil.Range(8, 12, 2)), _
         ArrayUtil.Range(0, 12, 2)
-    
-    Ping_
 End Sub
