@@ -140,7 +140,12 @@ End Function
 '# Although not really Functional Method, it falls under the iterators of Python
 'C Base Independent
 'R Zero Base
-Public Function Chain(ParamArray Arr() As Variant)
+Public Function Chain(Arr As Variant) As Variant
+    If ArrayUtil.IsEmptyArray(Arr) Then
+        Chain = ArrayUtil.CreateEmptyArray()
+        Exit Function
+    End If
+
     Dim CArr As Variant, TSize As Long, Arr_ As Variant, CIndex As Long, Elem_ As Variant
     TSize = 0
     For Each Arr_ In Arr

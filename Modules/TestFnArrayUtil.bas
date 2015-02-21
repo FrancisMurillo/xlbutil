@@ -26,13 +26,17 @@ End Sub
 Public Sub TestChain()
     VaseAssert.AssertEmptyArray _
         FnArrayUtil.Chain( _
-            Array(), Array(), Array())
+            Array())
+
+    VaseAssert.AssertEmptyArray _
+        FnArrayUtil.Chain(Array( _
+            Array(), Array(), Array()))
     
     VaseAssert.AssertArraysEqual _
-        FnArrayUtil.Chain( _
+        FnArrayUtil.Chain(Array( _
             ArrayUtil.Range(0, 4, 2), _
             ArrayUtil.Range(4, 8, 2), _
-            ArrayUtil.Range(8, 12, 2)), _
+            ArrayUtil.Range(8, 12, 2))), _
         ArrayUtil.Range(0, 12, 2)
 End Sub
 

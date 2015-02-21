@@ -46,3 +46,34 @@ Public Function IsInLike(Pattern As String, SArr As Variant, _
         End If
     Next
 End Function
+
+'# This complements IsInLike as this gives the index found.
+'# However, this assumes the array is zero base
+'# since an incremental find would not be possible without a fixed base
+'P StartIndex: This dictates where to start the search, you can use this to search for all the elements with this criteria
+'C Base Indepedent
+'R If it is not found, it gives one less than the start index.
+'R If it is found, it gives the first index with that index
+Public Function FindLike(Pattern As String, SArr As Variant, _
+                    Optional StartIndex As Long = 0, _
+                    Optional IgnoreCase As Boolean = False) As Long
+    FindLike = -1
+    If ArrayUtil.IsEmptyArray(SArr) Then _
+        Exit Function
+    
+    Dim Index As Long, Pattern_ As String, SMatch As String
+    Pattern_ = Pattern
+    If IgnoreCase Then _
+        Pattern_ = UCase(Pattern)
+    
+    For Index = StartIndex To UBound(SArr)
+        SMatch = SArr(Index)
+        If IgnoreCase Then _
+            SMatch = UCase(SMatch)
+            
+        If SMatch Like Pattern_ Then
+            FindLike = Index
+            Exit Function
+        End If
+    Next
+End Function
