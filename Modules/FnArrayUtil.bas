@@ -31,7 +31,7 @@ Public Function Map_(MethodName As String, Arr As Variant) As Variant
 
     For Index = LBound(Arr_) To UBound(Arr_)
         Elem_ = Arr(Index)
-        Arr_(Index) = Fn.Invoke(MethodName, Array(Elem_))
+        Arr_(Index) = Fn.InvokeOneArg(MethodName, Elem_)
     Next
     
     Map_ = Arr_
@@ -49,7 +49,7 @@ Public Function Filter_(MethodName As String, Arr As Variant)
     Dim Arr_ As Variant, Index As Long, Elem_ As Variant
     Arr_ = ArrayUtil.CreateWithSize(ArrayUtil.Size(Arr))
     For Each Elem_ In Arr
-        If Fn.Invoke(MethodName, Array(Elem_)) Then
+        If Fn.InvokeOneArg(MethodName, Elem_) Then
             Arr_(Index) = Elem_
             Index = Index + 1
         End If
@@ -85,7 +85,7 @@ Public Function Reduce_(MethodName As String, Arr As Variant, Optional Initial A
     StartIndex = LBound(Arr) + IIf(UseFirst, 1, 0)
     For Index = StartIndex To UBound(Arr)
         Elem_ = Arr(Index)
-        Acc_ = Fn.Invoke(MethodName, Array(Acc_, Elem_))
+        Acc_ = Fn.InvokeTwoArg(MethodName, Acc_, Elem_)
     Next
     
     Reduce_ = Acc_

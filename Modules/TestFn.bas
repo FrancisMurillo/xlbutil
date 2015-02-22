@@ -50,6 +50,23 @@ Public Sub TestCompose()
     VaseAssert.AssertEqual _
         Fn.InvokeOneArg(ToUpperAndRemove_Fn, "Francis"), _
         "FRNCS"
+End Sub
+
+Public Sub TestReinvoke()
+    Dim WithTwoAndThree As String
+    WithTwoAndThree = Fn.Reinvoke(Array(2, 3))
+    
+    VaseAssert.AssertEqual _
+        Fn.InvokeOneArg(WithTwoAndThree, "FnOperator.Add_"), _
+        5
+    VaseAssert.AssertEqual _
+        Fn.InvokeOneArg(WithTwoAndThree, "FnOperator.Multiply_"), _
+        6
+        
+    VaseAssert.AssertArraysEqual _
+        FnArrayUtil.Map_(WithTwoAndThree, _
+            Array("FnOperator.Add_", "FnOperator.Multiply_")), _
+        Array(5, 6)
     
     Ping_
 End Sub

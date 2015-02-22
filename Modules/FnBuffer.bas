@@ -19,6 +19,7 @@ Public Const BUFFER_PREFIX As String = "Buffer_"
 
 Public Const CURRY_METHOD As String = "Curry_"
 Public Const COMPOSE_METHOD As String = "Compose_"
+Public Const REINVOKE_METHOD As String = "Reinvoke_"
 
 Private gIsBufferReady As Boolean
 Private gBufferIndex As Long
@@ -57,6 +58,15 @@ Public Sub Compose_(Args As Variant)
         AccRes = Fn.InvokeOneArg(MethodName, AccRes)
     Next
     Fn.Result = AccRes
+End Sub
+
+'# (Re)invokes a function with predefined arguments
+Public Sub Reinvoke_(Args As Variant)
+    Dim MethodName As String, PreArgs As Variant
+    MethodName = Args(2)(0)
+    PreArgs = Args(1)
+    
+    Fn.Result = Fn.Invoke(MethodName, PreArgs)
 End Sub
 
 ' ## Function Buffers CRUD
