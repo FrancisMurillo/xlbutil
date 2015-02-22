@@ -76,17 +76,17 @@ End Function
 
 '# Determines a file encoding
 Public Function DetectEncoding(ByVal FileName As String) As Encoding
-  Dim b1 As Byte, b2 As Byte, c As String
+  Dim b1 As Byte, b2 As Byte, C As String
   Open FileName For Binary As #1
   Get #1, , b1
   Get #1, , b2
   Close #1
   
-  If b1 = &HFF And b2 = &HFE Then c = UNICODE Else _
-  If b1 = &HFE And b2 = &HFF Then c = UNICODEBOM Else _
-  If b1 = &HEF And b2 = &HBB Then c = UTF Else c = ANSI
+  If b1 = &HFF And b2 = &HFE Then C = UNICODE Else _
+  If b1 = &HFE And b2 = &HFF Then C = UNICODEBOM Else _
+  If b1 = &HEF And b2 = &HBB Then C = UTF Else C = ANSI
   
-  DetectEncoding = c
+  DetectEncoding = C
 End Function
 
 

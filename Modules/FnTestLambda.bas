@@ -55,3 +55,9 @@ Public Sub Formula_(Tuple As Variant)
     Fn.Result = NumericArrayUtil.Product(Tuple)
 End Sub
 
+'# A quick triple sum
+Public Sub TripletSum_(A As Variant, B As Variant, C As Variant)
+    Fn.Result = A + B + C
+End Sub
+
+
