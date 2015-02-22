@@ -7,7 +7,8 @@ Public Sub WriteInfo()
         "ArrayUtil", _
         "AssertUtil", _
         "BookUtil", _
-        "FileUtil", _
+        "Fn", "FnArrayUtil", "FnOperator", "FnFunction", "FnPredicate", _
+        "FileUtil", "PathUtil", _
         "RangeUtil")
 End Sub
 
