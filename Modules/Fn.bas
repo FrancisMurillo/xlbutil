@@ -173,6 +173,16 @@ Public Function InvokeNoArgs(MethodName As String)
     InvokeNoArgs = Invoke(MethodName, Array())
 End Function
 
+'# Invokes a method with one argument
+Public Function InvokeOneArg(MethodName As String, Arg As Variant)
+    InvokeOneArg = Invoke(MethodName, Array(Arg))
+End Function
+
+'# Invokes a method with two arguments
+Public Function InvokeTwoArg(MethodName As String, Arg1 As Variant, Arg2 As Variant)
+    InvokeTwoArg = Invoke(MethodName, Array(Arg1, Arg2))
+End Function
+
 ' ## Combinator Functions
 '
 ' These functions combines functions basically.
@@ -183,7 +193,26 @@ Public Function Curry(MethodName As String, PreArgs As Variant) As String
     FnBuffer.InitializeBuffers
     BIndex = FnBuffer.GetNextBufferIndex()
     FnBuffer.SetBuffer Array( _
-        BUFFER_MODULE & "." & FnBuffer.CURRY_METHOD, MethodName, PreArgs), _
+        BuildBufferName(FnBuffer.CURRY_METHOD), MethodName, PreArgs), _
         BIndex
-    Curry = BUFFER_MODULE & "." & FnBuffer.BUFFER_PREFIX & BIndex
+    Curry = BuildBufferName(BUFFER_PREFIX) & BIndex
+End Function
+
+'# Combines several functions together, think of function composition here
+Public Function Compose(MethodNames As Variant) As String
+    If ArrayUtil.IsEmptyArray(MethodNames) Then _
+        Err.Raise vbObjectError + ERR_OFFSET, ERR_SOURCE, "Fn.Compose is given an empty method names"
+
+    Dim BIndex As Long
+    FnBuffer.InitializeBuffers
+    BIndex = FnBuffer.GetNextBufferIndex()
+    FnBuffer.SetBuffer Array( _
+        BUFFER_MODULE & "." & FnBuffer.COMPOSE_METHOD, MethodNames, Empty), _
+        BIndex
+    Compose = BUFFER_MODULE & "." & FnBuffer.BUFFER_PREFIX & BIndex
+End Function
+
+'# Builds the full buffer module function name for use given the module and method
+Private Function BuildBufferName(MethodName As String) As String
+    BuildBufferName = BUFFER_MODULE & "." & MethodName
 End Function

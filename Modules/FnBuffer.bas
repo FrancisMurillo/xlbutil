@@ -18,6 +18,7 @@ Private Const BUFFER_COUNT As Long = 5
 Public Const BUFFER_PREFIX As String = "Buffer_"
 
 Public Const CURRY_METHOD As String = "Curry_"
+Public Const COMPOSE_METHOD As String = "Compose_"
 
 Private gIsBufferReady As Boolean
 Private gBufferIndex As Long
@@ -38,9 +39,24 @@ Public Sub Curry_(Args As Variant)
     Dim MethodName As String, PreArgs As Variant, CurArgs As Variant, TotalArgs As Variant
     MethodName = Args(0)
     PreArgs = Args(1)
-    CurArgs = IIf(IsEmpty(Args(2)), Array(), Args(2))
+    CurArgs = Args(2)
     TotalArgs = FnArrayUtil.Chain(Array(PreArgs, CurArgs))
     Fn.Result = Fn.Invoke(MethodName, TotalArgs)
+End Sub
+
+'# Composes functions together
+Public Sub Compose_(Args As Variant)
+    Dim MethodNames As Variant, AccRes As Variant, MIndex As Long, InitArgs As Variant, MethodName As String
+    MethodNames = Args(0)
+    ' No Args(1) for Compose
+    InitArgs = Args(2)
+    
+    AccRes = Fn.Invoke(ArrayUtil.Last(MethodNames), InitArgs)
+    For MIndex = UBound(MethodNames) - 1 To LBound(MethodNames) Step -1
+        MethodName = MethodNames(MIndex)
+        AccRes = Fn.InvokeOneArg(MethodName, AccRes)
+    Next
+    Fn.Result = AccRes
 End Sub
 
 ' ## Function Buffers CRUD

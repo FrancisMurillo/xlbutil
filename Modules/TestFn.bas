@@ -35,3 +35,12 @@ Public Sub TestCurry()
         1
 End Sub
 
+Public Sub TestCompose()
+    Dim NegRecFn As String
+    
+    NegRecFn = Fn.Compose(Array("FnFunction.Negative_", "FnFunction.Reciprocal_"))
+    VaseAssert.AssertEqual _
+        Fn.InvokeOneArg(NegRecFn, 2), _
+        -(1 / 2)
+End Sub
+
