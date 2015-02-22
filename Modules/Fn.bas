@@ -168,6 +168,11 @@ ErrHandler:
     End If
 End Function
 
+'# Invokes a method without arguments
+Public Function InvokeNoArgs(MethodName As String)
+    InvokeNoArgs = Invoke(MethodName, Array())
+End Function
+
 ' ## Combinator Functions
 '
 ' These functions combines functions basically.
