@@ -500,7 +500,25 @@ Public Function IsAnyEmptyArray(ParamArray Arr() As Variant)
     Next
 End Function
 
+'# Reverese the collection of the array
+'C Base Independent
+'R Preserve Base
+Public Function Reverse(Arr)
+    If IsEmptyArray(Arr) Then
+        Reverse = CreateEmptyArray
+        Exit Function
+    End If
 
+    Dim Arr_ As Variant, CIndex As Long
+    Arr_ = CloneSize(Arr)
+    CIndex = LBound(Arr)
+    For Index = UBound(Arr) To LBound(Arr) Step -1
+        Arr_(CIndex) = Arr(Index)
+        CIndex = CIndex + 1
+    Next
+    
+    Reverse = Arr_
+End Function
 
 
 

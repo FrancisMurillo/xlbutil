@@ -315,3 +315,19 @@ Public Sub TestIsAnyEmptyArray()
         ArrayUtil.IsAnyEmptyArray( _
             Array())
 End Sub
+
+Public Sub TestReverse()
+    VaseAssert.AssertEmptyArray _
+        ArrayUtil.Reverse(Array())
+        
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Reverse(Array(2)), Array(2)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Reverse(ArrayUtil.Reverse(Array(2))), Array(2)
+        
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Reverse(ArrayUtil.Range(0, 5)), ArrayUtil.Range(4, -1, -1)
+    VaseAssert.AssertArraysEqual _
+        ArrayUtil.Reverse(ArrayUtil.Reverse(ArrayUtil.Range(0, 5))), ArrayUtil.Range(0, 5)
+End Sub
+
