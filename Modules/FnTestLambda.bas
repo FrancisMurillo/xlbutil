@@ -60,4 +60,17 @@ Public Sub TripletSum_(A As Variant, B As Variant, C As Variant)
     Fn.Result = A + B + C
 End Sub
 
+'# Remove all letter a's
+Public Sub RemoveA_(Val As String)
+    Fn.Result = Replace(Val, "a", "")
+End Sub
 
+'# Remove all letter i's
+Public Sub RemoveI_(Val As String)
+    Fn.Result = Replace(Val, "i", "")
+End Sub
+
+'# Go to uppercase
+Public Sub ToUppercase_(Val As String)
+    Fn.Result = UCase(Val)
+End Sub

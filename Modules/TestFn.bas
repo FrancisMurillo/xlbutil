@@ -42,5 +42,15 @@ Public Sub TestCompose()
     VaseAssert.AssertEqual _
         Fn.InvokeOneArg(NegRecFn, 2), _
         -(1 / 2)
+       
+    Dim RemoveAandI_Fn As String, ToUpperAndRemove_Fn As String
+    
+    RemoveAandI_Fn = Fn.Compose(Array("FnTestLambda.RemoveA_", "FnTestLambda.RemoveI_"))
+    ToUpperAndRemove_Fn = Fn.Compose(Array("FnTestLambda.ToUppercase_", RemoveAandI_Fn))
+    VaseAssert.AssertEqual _
+        Fn.InvokeOneArg(ToUpperAndRemove_Fn, "Francis"), _
+        "FRNCS"
+    
+    Ping_
 End Sub
 

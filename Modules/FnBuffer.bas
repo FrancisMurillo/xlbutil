@@ -14,7 +14,7 @@ Attribute VB_Name = "FnBuffer"
 Private Const ERR_SOURCE As String = "FnBuffer"
 Private Const ERR_OFFSET As Long = 2100
 
-Private Const BUFFER_COUNT As Long = 5
+Private Const BUFFER_COUNT As Long = 10
 Public Const BUFFER_PREFIX As String = "Buffer_"
 
 Public Const CURRY_METHOD As String = "Curry_"
@@ -130,6 +130,51 @@ Private Sub Buffer_4(Optional Args As Variant = Empty)
     CheckIfReady
     Dim BufferArgs As Variant
     BufferArgs = gBufferArgs(4)
+    If IsMissing(Args) Then _
+        Args = ArrayUtil.CreateEmptyArray()
+    Fn.Result = Fn.Invoke(CStr(BufferArgs(0)), Array(BufferArgs(1), BufferArgs(2), Args))
+End Sub
+
+Private Sub Buffer_5(Optional Args As Variant = Empty)
+    CheckIfReady
+    Dim BufferArgs As Variant
+    BufferArgs = gBufferArgs(5)
+    If IsMissing(Args) Then _
+        Args = ArrayUtil.CreateEmptyArray()
+    Fn.Result = Fn.Invoke(CStr(BufferArgs(0)), Array(BufferArgs(1), BufferArgs(2), Args))
+End Sub
+
+Private Sub Buffer_6(Optional Args As Variant = Empty)
+    CheckIfReady
+    Dim BufferArgs As Variant
+    BufferArgs = gBufferArgs(6)
+    If IsMissing(Args) Then _
+        Args = ArrayUtil.CreateEmptyArray()
+    Fn.Result = Fn.Invoke(CStr(BufferArgs(0)), Array(BufferArgs(1), BufferArgs(2), Args))
+End Sub
+
+Private Sub Buffer_7(Optional Args As Variant = Empty)
+    CheckIfReady
+    Dim BufferArgs As Variant
+    BufferArgs = gBufferArgs(7)
+    If IsMissing(Args) Then _
+        Args = ArrayUtil.CreateEmptyArray()
+    Fn.Result = Fn.Invoke(CStr(BufferArgs(0)), Array(BufferArgs(1), BufferArgs(2), Args))
+End Sub
+
+Private Sub Buffer_8(Optional Args As Variant = Empty)
+    CheckIfReady
+    Dim BufferArgs As Variant
+    BufferArgs = gBufferArgs(8)
+    If IsMissing(Args) Then _
+        Args = ArrayUtil.CreateEmptyArray()
+    Fn.Result = Fn.Invoke(CStr(BufferArgs(0)), Array(BufferArgs(1), BufferArgs(2), Args))
+End Sub
+
+Private Sub Buffer_9(Optional Args As Variant = Empty)
+    CheckIfReady
+    Dim BufferArgs As Variant
+    BufferArgs = gBufferArgs(9)
     If IsMissing(Args) Then _
         Args = ArrayUtil.CreateEmptyArray()
     Fn.Result = Fn.Invoke(CStr(BufferArgs(0)), Array(BufferArgs(1), BufferArgs(2), Args))
