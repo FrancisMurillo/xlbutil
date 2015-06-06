@@ -15,7 +15,7 @@ This is a <a href="https://github.com/FrancisMurillo/xlchip">chip</a> project, s
 And include in your project references the following, not really needed but this is needed to run chip.
 
 1. **Microsoft Visual Basic for Applications Extensibility 5.3** - Any version would do but it has been tested with version 5.3
-2. **Microsoft Scripting Runtime**
+2. **Microsoft Scripting Runtime** - Also make sure you enable *Trust Access to the VBA project object model* to allow this reference to work. This can be found in the *Trust Center* under *Macro Settings*
 
 You should see a bunch of *Util modules all over your project. Check out the list of available utilities on the next section
 
